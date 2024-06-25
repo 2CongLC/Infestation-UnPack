@@ -16,7 +16,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("UnPack"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+abc7ac2263b28f9a70e21d5dc33d202eb04cf918"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2435eaec65fc3723d9bca9695c811f114462073"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("UnPack"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("UnPack"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")> 

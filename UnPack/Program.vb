@@ -10,6 +10,7 @@ Module Program
     Private des As String
     Private source As String
     Private buffer As Byte()
+    Private subfiles As New List(Of FileData)()
 
     Private ms As MemoryStream
 
@@ -23,8 +24,8 @@ Module Program
 
         If File.Exists(source) Then
 
+            des = Path.GetDirectoryName(source) + "\" & Path.GetFileNameWithoutExtension(source) + "\"
             br = New BinaryReader(File.OpenRead(source))
-            des = Path.GetDirectoryName(source) + "\"
 
             br.BaseStream.Position = 26
             ms = New MemoryStream()
@@ -34,7 +35,7 @@ Module Program
 
             br = New BinaryReader(ms)
             br.BaseStream.Position = 0
-            Dim subfiles As New List(Of FileData)()
+
             While br.BaseStream.Position < br.BaseStream.Length
                 subfiles.Add(New FileData)
                 Dim unknow As Byte() = br.ReadBytes(14)
@@ -50,11 +51,11 @@ Module Program
                 Console.WriteLine("File Offset : {0} - File SizeCompressed - File SizeUncompressed : {2} - File Name : {3}", fd.offset, fd.sizeCompressed, fd.sizeUncompressed, fd.name)
                 br.BaseStream.Position = fd.offset
                 Dim buffer As Byte()
-                Directory.CreateDirectory(des + Path.GetFileNameWithoutExtension(source) + "\" + Path.GetDirectoryName(fd.name))
+                Directory.CreateDirectory(des + Path.GetDirectoryName(fd.name))
 
                 If fd.isCompressed = 2 Then
                     buffer = br.ReadBytes(fd.sizeCompressed)
-                    Dim fs As FileStream = File.Create(des + Path.GetFileNameWithoutExtension(source) + "\" + fd.name)
+                    Dim fs As FileStream = File.Create(des + fd.name)
                     Dim unknow1 As Int16 = br.ReadInt16
                     Using dfs As New DeflateStream(New MemoryStream(buffer), CompressionMode.Decompress)
                         dfs.CopyTo(fs)
@@ -62,7 +63,7 @@ Module Program
                     fs.Close()
                 Else
                     buffer = br.ReadBytes(fd.sizeUncompressed)
-                    Using bw As New BinaryWriter(File.Create(des + Path.GetFileNameWithoutExtension(source) + "\" + fd.name))
+                    Using bw As New BinaryWriter(File.Create(des + fd.name))
                         bw.Write(buffer)
                     End Using
                 End If
